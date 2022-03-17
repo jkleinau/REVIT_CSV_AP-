@@ -2,8 +2,11 @@ import csv
 from fileinput import filename
 from logging import root
 import math
-from tkinter import *
+from tkinter import ttk
 from tkinter import filedialog as fd
+from tkinter import messagebox as mb
+import tkinter
+from turtle import title
 
 
 def get_row(ebene, title, wand_id, gruppe='', ap_wand_id='', artikelnummer='', me='Stück', menge=1, profillänge='', fläche='', einkauf='1', lager='1', fertigung='0', auftrag='0',  länge='', breite='', bsu_id='', kleinteilbez=''):
@@ -99,12 +102,11 @@ def load_data(filepath):
     return data
 
 
-filepath = ''
-root = Tk()
-import_btn = Button(root, text='Datei öffnen', command=select_file)
-import_btn.pack(side=LEFT, padx=10, pady=10)
-if __name__ == '__main__':
-    root.mainloop()
+def convert():
+    if filepath == '':
+        mb.showerror("Keine Datei ausgewählt",
+                     "Es wurde keine Datei zum Konvertieren ausgewählt. Bitte wählen Sie eine vorher aus.")
+        return
     data = load_data(filepath)
     for row in data:
         row['APPLUS MENGE'] = int(row['APPLUS MENGE'])
@@ -213,3 +215,34 @@ if __name__ == '__main__':
         writer.writeheader()
 
         writer.writerows(data)
+
+
+filepath = ''
+root = tkinter.Tk()
+
+root.title("AP+ Converter")
+# root.geometry('300x200')
+root.configure(background='red')
+
+# style configuration
+style = ttk.Style(root)
+style.configure('TLabel', background='black', foreground='white')
+style.configure('TFrame', background='black')
+
+frame = ttk.Frame(root)
+frame.grid(column=0, row=0)
+
+
+import_btn = ttk.Button(frame, text='Datei öffnen', command=select_file)
+import_btn.grid(row=1)
+
+convert_btn = ttk.Button(frame, text="Konvertieren", command=convert)
+convert_btn.grid(row=2)
+
+title_label = ttk.Label(frame, text="Projekttitel").grid(row=0, column=0)
+project_title = ttk.Entry(frame)
+project_title.grid(row=0)
+
+
+if __name__ == '__main__':
+    root.mainloop()
