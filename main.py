@@ -1,12 +1,9 @@
 import csv
-from fileinput import filename
-from logging import root
 import math
-from tkinter import ttk
 from tkinter import filedialog as fd
 from tkinter import messagebox as mb
-import tkinter
-from turtle import title
+from tkinter.simpledialog import askstring
+import os
 
 
 def get_row(ebene, title, wand_id, gruppe='', ap_wand_id='', artikelnummer='', me='Stück', menge=1, profillänge='', fläche='', einkauf='1', lager='1', fertigung='0', auftrag='0',  länge='', breite='', bsu_id='', kleinteilbez=''):
@@ -42,7 +39,7 @@ def select_file():
     global filepath
     filepath = fd.askopenfilename(
         title='Open a file',
-        initialdir='/',
+        initialdir=os.getcwd(),
         filetypes=filetypes)
 
 
@@ -161,7 +158,7 @@ def convert():
             data.insert(idx, get_row('3', "Alle " + gruppe + " Wand " +
                         row['Wand ID'], row['Wand ID'], gruppe=gruppe, einkauf='0', lager='0', fertigung='1', auftrag='1'))
 
-    data.insert(0, get_row('1', "Projekt " + input('Porjekttitel '), 0, einkauf='0',
+    data.insert(0, get_row('1', "Projekt " + title, 0, einkauf='0',
                 lager='0', fertigung='1', auftrag='1'))
 
     for idx, row in enumerate(data):
@@ -218,31 +215,9 @@ def convert():
 
 
 filepath = ''
-root = tkinter.Tk()
-
-root.title("AP+ Converter")
-# root.geometry('300x200')
-root.configure(background='red')
-
-# style configuration
-style = ttk.Style(root)
-style.configure('TLabel', background='black', foreground='white')
-style.configure('TFrame', background='black')
-
-frame = ttk.Frame(root)
-frame.grid(column=0, row=0)
-
-
-import_btn = ttk.Button(frame, text='Datei öffnen', command=select_file)
-import_btn.grid(row=1)
-
-convert_btn = ttk.Button(frame, text="Konvertieren", command=convert)
-convert_btn.grid(row=2)
-
-title_label = ttk.Label(frame, text="Projekttitel").grid(row=0, column=0)
-project_title = ttk.Entry(frame)
-project_title.grid(row=0)
-
-
+title = ''
 if __name__ == '__main__':
-    root.mainloop()
+    select_file()
+    title = askstring(
+        "Projekttitel", "Bitte geben Sie den Titel des Projekts ein")
+    convert()
