@@ -226,22 +226,23 @@ root.configure(background='red')
 
 # style configuration
 style = ttk.Style(root)
-style.configure('TLabel', background='black', foreground='white')
-style.configure('TFrame', background='black')
+style.configure('TLabel', background='white', foreground='white')
+style.configure('TFrame', background='white')
+paddings = {'padx': 5, 'pady': 5}
 
 frame = ttk.Frame(root)
 frame.grid(column=0, row=0)
 
 
 import_btn = ttk.Button(frame, text='Datei öffnen', command=select_file)
-import_btn.grid(row=1)
+import_btn.grid(row=1, **paddings)
 
 convert_btn = ttk.Button(frame, text="Konvertieren", command=convert)
-convert_btn.grid(row=2)
+convert_btn.grid(row=2, **paddings)
 
 title_label = ttk.Label(frame, text="Projekttitel").grid(row=0, column=0)
 project_title = ttk.Entry(frame)
-project_title.grid(row=0)
+project_title.grid(row=0, **paddings)
 
 
 if __name__ == '__main__':
