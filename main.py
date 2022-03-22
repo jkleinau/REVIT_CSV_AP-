@@ -108,21 +108,23 @@ def convert():
     for row in data:
         row['APPLUS MENGE'] = int(row['APPLUS MENGE'])
         row['Wand ID'] = row['APPLUS WAND ID'].split(' ')[1]
-
-        if row['APPLUS ARTIKELGRUPPE'] == 'Profil':
-            row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
-                                                     float(row['APPLUS PROFILLÄNGE'].replace(',', '.')) / 1000)
-            pass
-        elif row['APPLUS ARTIKELGRUPPE'] == 'Platte':
-            row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
-                                                     float(row['APPLUS FLÄCHE'].replace(',', '.')))
-            pass
-        elif row['APPLUS ARTIKELGRUPPE'] == 'Kleinteil':
-            continue
-        else:
-            row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
-                                                     int(row['APPLUS MENGE']))
-            pass
+        try:
+            if row['APPLUS ARTIKELGRUPPE'] == 'Profil':
+                row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
+                                                         float(row['APPLUS PROFILLÄNGE'].replace(',', '.')) / 1000)
+                pass
+            elif row['APPLUS ARTIKELGRUPPE'] == 'Platte':
+                row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
+                                                         float(row['APPLUS FLÄCHE'].replace(',', '.')))
+                pass
+            elif row['APPLUS ARTIKELGRUPPE'] == 'Kleinteil':
+                continue
+            else:
+                row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
+                                                         int(row['APPLUS MENGE']))
+                pass
+        except:
+            row['APPLUS KLEINTEILMENGE'] = 0
         if row['APPLUS KLEINTEILMENGE'] > 0:
             data.append(
                 get_row('4', row['APPLUS KLEINTEILBEZEICHNUNG'], row['Wand ID'], ap_wand_id=row['APPLUS WAND ID'], gruppe='Kleinteil', artikelnummer=row['APPLUS KLEINTEILARTIKELNUMMER'], menge=row['APPLUS KLEINTEILMENGE']))
