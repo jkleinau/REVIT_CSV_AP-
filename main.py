@@ -195,7 +195,7 @@ def convert():
                         row['APPLUS ARTIKELNUMMER'] = row['APPLUS BSU ID'] + row['APPLUS PROFILLÄNGE'].replace(
                             '.', '') + row['APPLUS STANDARDPROFILLÄNGE'] + row['APPLUS PROFILLÄNGE'].replace('.', '')
                         data.insert(idx + 1, get_row('5', '', '',
-                                    artikelnummer=artNr, menge=menge, me='mm'))
+                                    artikelnummer=artNr, gruppe="ProfilZ", menge=menge, me='mm'))
 
                     continue
                     # print("Profil")
@@ -210,7 +210,7 @@ def convert():
     fieldnames = ['APPLUS EBENE', 'APPLUS BEZEICHNUNG', 'APPLUS ARTIKELNUMMER', 'APPLUS MENGE', 'APPLUS MENGENEINHEIT', 'APPLUS ARTIKELGRUPPE', 'APPLUS PROFILLÄNGE', 'APPLUS FLÄCHE', 'APPLUS STANDARDPROFILLÄNGE', 'APPLUS STANDARDFLÄCHE',
                   'APPLUS EINKAUF', 'APPLUS LAGER', 'APPLUS FERTIGUNG', 'APPLUS AUFTRAG', 'APPLUS LÄNGE', 'APPLUS BREITE', 'APPLUS WAND ID', 'APPLUS KLEINTEILMENGE', 'APPLUS KLEINTEILBEZEICHNUNG', 'APPLUS KLEINTEILSCHLÜSSEL', 'APPLUS KLEINTEILARTIKELNUMMER', 'APPLUS BSU ID', 'Wand ID']
     with open(r'converted.csv', 'w', newline='\n', encoding='utf-8-sig') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
 
         writer.writerows(data)
