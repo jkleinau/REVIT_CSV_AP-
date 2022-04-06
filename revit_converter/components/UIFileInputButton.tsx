@@ -33,7 +33,7 @@ export const UiFileInputButton: React.FC<IProps> = (props) => {
 
 	return (
 		<form ref={formRef}>
-			<button type='button' onClick={onClickHandler}>
+			<button type='button' className='px-4 py-2 rounded border-2 m-4' onClick={onClickHandler}>
 				{props.label}
 			</button>
 			<input

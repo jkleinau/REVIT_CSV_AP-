@@ -1,23 +1,19 @@
-import { UiFileInputButton } from '../components/UIFileInputButton';
+import fs from 'fs';
 import axios from 'axios';
-const IndexPage = (props) => {
-	const onChange = async (formData) => {
-		const config = {
-			headers: { 'content-type': 'multipart/form-data' },
-			onUploadProgress: (event) => {
-				console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
-			},
-		};
-
-		const response = await axios.post('/api/uploads', formData, config);
-
-		console.log('response', response.data);
-	};
-
+import { NextPageContext } from 'next';
+const IndexPage = ({ files }) => {
 	return (
-		<div>
-			<UiFileInputButton label='Upload Single File' uploadFileName='theFiles' onChange={onChange} />
-		</div>
+		<ul className='list-none'>
+			{files.map((file: string) => {
+				return <li key={file}> {file}</li>;
+			})}
+		</ul>
 	);
 };
+export async function getServerSideProps(context: NextPageContext) {
+	const files = fs.readdirSync('public/uploads');
+	return {
+		props: { files }, // will be passed to the page component as props
+	};
+}
 export default IndexPage;
