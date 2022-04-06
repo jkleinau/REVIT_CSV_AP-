@@ -5,7 +5,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const upload = multer({
 	storage: multer.diskStorage({
 		destination: './public/uploads',
-		filename: (req, file, cb) => cb(null, file.originalname),
+		filename: function (req, file, cb) {
+			const uniqueSuffix = Date.now();
+			cb(null, file.originalname.split('.')[0] + '-' + uniqueSuffix + '.csv');
+		},
 	}),
 });
 
