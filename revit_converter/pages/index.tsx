@@ -5,7 +5,12 @@ const IndexPage = ({ files }) => {
 	return (
 		<ul className='list-none'>
 			{files.map((file: string) => {
-				return <li key={file}> {file.split('.')[0]}</li>;
+				return (
+					<li key={file}>
+						{' '}
+						<a href={'/detail?filename=' + file}>{file.split('.')[0]}</a>
+					</li>
+				);
 			})}
 		</ul>
 	);

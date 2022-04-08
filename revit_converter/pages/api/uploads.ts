@@ -6,8 +6,22 @@ const upload = multer({
 	storage: multer.diskStorage({
 		destination: './public/uploads',
 		filename: function (req, file, cb) {
-			const uniqueSuffix = Date.now();
-			cb(null, file.originalname.split('.')[0] + '-' + uniqueSuffix + '.csv');
+			const date = new Date();
+			cb(
+				null,
+				date.getFullYear() +
+					'-' +
+					date.getMonth() +
+					'-' +
+					date.getDate() +
+					'-' +
+					date.getHours() +
+					'-' +
+					date.getMinutes() +
+					'-' +
+					date.getSeconds() +
+					'.csv'
+			);
 		},
 	}),
 });
