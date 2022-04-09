@@ -3,21 +3,29 @@ import { FC } from 'react';
 import fs from 'fs';
 import { parse } from 'csv-parse/sync';
 const Detail: FC = ({ data }) => {
+	// const keys = Object.keys(data[0]);
+	const keys = ['APPLUS EBENE', 'APPLUS BEZEICHNUNG', 'APPLUS ARTIKELNUMMER', 'APPLUS MENGE'];
 	return (
 		<div>
-			<table>
-				<tr>
-					<th>APPLUS BEZEICHNUNG</th>
-					<th>APPLUS ARTIKELNUMMER</th>
-				</tr>
-				{data.map((record) => {
-					return (
-						<tr key={record['APPLUS ARTIKELNUMMER']}>
-							<th>{record['APPLUS BEZEICHNUNG']}</th>
-							<th>{record['APPLUS ARTIKELNUMMER']}</th>
-						</tr>
-					);
-				})}
+			<table className='table-fixed mx-auto'>
+				<thead>
+					<tr>
+						{keys.map((key) => {
+							return <th key={key}>{key}</th>;
+						})}
+					</tr>
+				</thead>
+				<tbody>
+					{data.map((record) => {
+						return (
+							<tr key={record['APPLUS ARTIKELNUMMER']}>
+								{keys.map((key) => {
+									return <td key={key}>{record[key]}</td>;
+								})}
+							</tr>
+						);
+					})}
+				</tbody>
 			</table>
 		</div>
 	);

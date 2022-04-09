@@ -3,16 +3,28 @@ import axios from 'axios';
 import { NextPageContext } from 'next';
 const IndexPage = ({ files }) => {
 	return (
-		<ul className='list-none'>
-			{files.map((file: string) => {
-				return (
-					<li key={file}>
-						{' '}
-						<a href={'/detail?filename=' + file}>{file.split('.')[0]}</a>
-					</li>
-				);
-			})}
-		</ul>
+		<table className='table-fixed mx-auto'>
+			<thead>
+				<tr>
+					<th>File Name</th>
+					<th>created at</th>
+				</tr>
+			</thead>
+			<tbody>
+				{files.map((file: string) => {
+					const split = file.split('-');
+					const date = new Date(Number(split[1].split('.')[0]));
+					return (
+						<tr key={file}>
+							<a href={'/detail?filename=' + file}>
+								<td>{split[0]}</td>
+								<td>{date.toLocaleString()}</td>
+							</a>
+						</tr>
+					);
+				})}
+			</tbody>
+		</table>
 	);
 };
 export async function getServerSideProps(context: NextPageContext) {
