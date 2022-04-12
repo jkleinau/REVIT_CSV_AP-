@@ -2,7 +2,7 @@ import { NextPageContext } from 'next';
 import fs from 'fs';
 import Link from 'next/link';
 type FileProps = {
-	file: string;
+	file: string | null;
 };
 const download = ({ file }: FileProps) => {
 	return (
@@ -13,12 +13,14 @@ const download = ({ file }: FileProps) => {
 				<Link href='/upload'>
 					<a className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'>Zum Start</a>
 				</Link>
-				<a
-					href={'/api/download?filename=' + file}
-					className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'
-				>
-					Download
-				</a>
+				{file ? (
+					<a
+						href={'/api/download?filename=' + file}
+						className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'
+					>
+						Download
+					</a>
+				) : null}
 			</div>
 		</div>
 	);
@@ -27,7 +29,7 @@ const download = ({ file }: FileProps) => {
 export async function getServerSideProps(context: NextPageContext) {
 	const files = fs.readdirSync('public/downloads');
 	return {
-		props: { file: files[0] }, // will be passed to the page component as props
+		props: { file: files[0] ? files[0] : null }, // will be passed to the page component as props
 	};
 }
 export default download;

@@ -1,17 +1,17 @@
 import { UiFileInputButton } from '../components/UIFileInputButton';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-const IndexPage = (props) => {
+const IndexPage = () => {
 	const router = useRouter();
-	const onChange = async (formData) => {
+	const onChange = async (formData: any) => {
 		const config = {
 			headers: { 'content-type': 'multipart/form-data' },
-			onUploadProgress: (event) => {
+			onUploadProgress: (event: any) => {
 				console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
 			},
 		};
 
-		const response = await axios.post('/api/uploads', formData, config);
+		const response = await axios.post('http://localhost:3000/api/uploads', formData, config);
 		if (response.status === 200) {
 			router.push('/convert');
 		}

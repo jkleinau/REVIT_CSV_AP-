@@ -1,8 +1,5 @@
-import fs from 'fs';
-import axios from 'axios';
-import { NextPageContext } from 'next';
 import Link from 'next/link';
-const IndexPage = ({}) => {
+const IndexPage = () => {
 	return (
 		<div>
 			<h1 className='text-8xl text-center py-20'>Revit zu Ap+ Converter</h1>
