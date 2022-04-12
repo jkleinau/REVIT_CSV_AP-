@@ -1,36 +1,25 @@
 import fs from 'fs';
 import axios from 'axios';
 import { NextPageContext } from 'next';
-const IndexPage = ({ files }) => {
+import Link from 'next/link';
+const IndexPage = ({}) => {
 	return (
-		<table className='table-fixed mx-auto'>
-			<thead>
-				<tr>
-					<th>File Name</th>
-					<th>created at</th>
-				</tr>
-			</thead>
-			<tbody>
-				{files.map((file: string) => {
-					const split = file.split('-');
-					const date = new Date(Number(split[1].split('.')[0]));
-					return (
-						<tr key={file}>
-							<a href={'/detail?filename=' + file}>
-								<td>{split[0]}</td>
-								<td>{date.toLocaleString()}</td>
-							</a>
-						</tr>
-					);
-				})}
-			</tbody>
-		</table>
+		<div>
+			<h1 className='text-8xl text-center py-20'>Revit zu Ap+ Converter</h1>
+			<div className='flex justify-center'>
+				<Link href='/upload'>
+					<a className='px-4 py-2 rounded text-center border-2 mx-auto text-2xl hover:bg-white hover:text-indigo-600'>
+						Start
+					</a>
+				</Link>
+			</div>
+		</div>
 	);
 };
-export async function getServerSideProps(context: NextPageContext) {
-	const files = fs.readdirSync('public/uploads');
-	return {
-		props: { files }, // will be passed to the page component as props
-	};
-}
+// export async function getServerSideProps(context: NextPageContext) {
+// 	const files = fs.readdirSync('public/uploads');
+// 	return {
+// 		props: { files }, // will be passed to the page component as props
+// 	};
+// }
 export default IndexPage;
