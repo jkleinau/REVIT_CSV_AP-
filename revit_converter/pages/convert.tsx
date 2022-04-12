@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -6,8 +6,7 @@ import { useRouter } from 'next/router';
 const Detail: FC = () => {
 	const [proj_titel, setproj_titel] = useState('');
 	const router = useRouter();
-	const onClick = async (event) => {
-		event.preventDefault();
+	const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const response = await axios.post('/api/converter', { proj_titel: proj_titel });
 		if (response.status === 200) {
 			router.push('/download');
