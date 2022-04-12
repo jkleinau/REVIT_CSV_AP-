@@ -5,7 +5,7 @@ import Nav from '../components/Nav';
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
-			<Nav />
+			{/* <Nav /> */}
 			<Component {...pageProps} />
 		</>
 	);

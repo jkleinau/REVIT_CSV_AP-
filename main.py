@@ -1,9 +1,7 @@
 import csv
 import math
-from tkinter import filedialog as fd
-from tkinter import messagebox as mb
-from tkinter.simpledialog import askstring
 import os
+import sys
 
 
 def get_row(ebene, title, wand_id, gruppe='', ap_wand_id='', artikelnummer='', me='Stück', menge=1, profillänge='', fläche='', einkauf='1', lager='1', fertigung='0', auftrag='0',  länge='', breite='', bsu_id='', kleinteilbez=''):
@@ -31,16 +29,16 @@ def get_row(ebene, title, wand_id, gruppe='', ap_wand_id='', artikelnummer='', m
     }
 
 
-def select_file():
-    filetypes = (
-        ('csv files', '*.csv'),
-        ('All files', '*.*')
-    )
-    global filepath
-    filepath = fd.askopenfilename(
-        title='Open a file',
-        initialdir=os.getcwd(),
-        filetypes=filetypes)
+# def select_file():
+#     filetypes = (
+#         ('csv files', '*.csv'),
+#         ('All files', '*.*')
+#     )
+#     global filepath
+#     filepath = fd.askopenfilename(
+#         title='Open a file',
+#         initialdir=os.getcwd(),
+#         filetypes=filetypes)
 
 
 def plattesml(data, idx):
@@ -92,18 +90,21 @@ def fertigung_auftrag(data, idx):
 
 def load_data(filepath):
     data = []
-    with open(filepath, newline='\n', encoding='utf-8-sig') as csvfile:
-        spamreader = csv.DictReader(csvfile, delimiter=';', quotechar='|')
-        for row in spamreader:
-            data.append(row)
-    return data
+    try:
+        with open(filepath, newline='\n', encoding='utf-8-sig') as csvfile:
+            spamreader = csv.DictReader(csvfile, delimiter=';', quotechar='|')
+            for row in spamreader:
+                data.append(row)
+        print('Datei erfolgreich geladen')
+        # print(data)
+        return data
+    except:
+        print("Datei laden fehlgeschlagen")
 
 
 def convert():
     if filepath == '':
-        mb.showerror("Keine Datei ausgewählt",
-                     "Es wurde keine Datei zum Konvertieren ausgewählt. Bitte wählen Sie eine vorher aus.")
-        return
+        print("Es wurde keine Datei zum Konvertieren ausgewählt. Bitte wählen Sie eine vorher aus.")
     data = load_data(filepath)
     for row in data:
         row['APPLUS MENGE'] = int(row['APPLUS MENGE'])
@@ -209,17 +210,22 @@ def convert():
 
     fieldnames = ['APPLUS EBENE', 'APPLUS BEZEICHNUNG', 'APPLUS ARTIKELNUMMER', 'APPLUS MENGE', 'APPLUS MENGENEINHEIT', 'APPLUS ARTIKELGRUPPE', 'APPLUS PROFILLÄNGE', 'APPLUS FLÄCHE', 'APPLUS STANDARDPROFILLÄNGE', 'APPLUS STANDARDFLÄCHE',
                   'APPLUS EINKAUF', 'APPLUS LAGER', 'APPLUS FERTIGUNG', 'APPLUS AUFTRAG', 'APPLUS LÄNGE', 'APPLUS BREITE', 'APPLUS WAND ID', 'APPLUS KLEINTEILMENGE', 'APPLUS KLEINTEILBEZEICHNUNG', 'APPLUS KLEINTEILSCHLÜSSEL', 'APPLUS KLEINTEILARTIKELNUMMER', 'APPLUS BSU ID', 'Wand ID']
-    with open(r'converted.csv', 'w', newline='\n', encoding='utf-8-sig') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
-        writer.writeheader()
-
-        writer.writerows(data)
+    try:
+        with open(filepath.replace('uploads', 'downloads'), 'w', newline='\n', encoding='utf-8-sig') as csvfile:
+            writer = csv.DictWriter(
+                csvfile, fieldnames=fieldnames, delimiter=',')
+            writer.writeheader()
+            writer.writerows(data)
+        print("Datei erfolgreich geschrieben")
+    except:
+        print("Datei schreiben fehlgeschlagen")
 
 
 filepath = ''
 title = ''
 if __name__ == '__main__':
-    select_file()
-    title = askstring(
-        "Projekttitel", "Bitte geben Sie den Titel des Projekts ein")
+    filepath = sys.argv[1]
+    title = sys.argv[2]
+    # print("Python Script start")
+    # print(title)
     convert()

@@ -1,6 +1,8 @@
 import { UiFileInputButton } from '../components/UIFileInputButton';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 const IndexPage = (props) => {
+	const router = useRouter();
 	const onChange = async (formData) => {
 		const config = {
 			headers: { 'content-type': 'multipart/form-data' },
@@ -10,12 +12,17 @@ const IndexPage = (props) => {
 		};
 
 		const response = await axios.post('/api/uploads', formData, config);
-
+		if (response.status === 200) {
+			router.push('/convert');
+		}
 		console.log('response', response.data);
 	};
 
 	return (
 		<div>
+			<h1 className='text-8xl text-center p-8 mb-6 mt-28'>
+				Bitte hier die CSV hochladen, die umgewandelt werden soll.
+			</h1>
 			<UiFileInputButton
 				acceptedFileTypes='.csv'
 				allowMultipleFiles={false}

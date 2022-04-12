@@ -7,7 +7,7 @@ const upload = multer({
 		destination: './public/uploads',
 		filename: function (req, file, cb) {
 			const suffix = Date.now();
-			cb(null, file.originalname + '-' + suffix + '.csv');
+			cb(null, suffix + '.csv');
 		},
 	}),
 });
