@@ -3,6 +3,8 @@ import math
 import os
 import sys
 
+# create a row with fields
+
 
 def get_row(ebene, title, wand_id, gruppe='', ap_wand_id='', artikelnummer='', me='Stück', menge=1, profillänge='', fläche='', einkauf='1', lager='1', fertigung='0', auftrag='0',  länge='', breite='', bsu_id='', kleinteilbez=''):
     return {
@@ -27,18 +29,6 @@ def get_row(ebene, title, wand_id, gruppe='', ap_wand_id='', artikelnummer='', m
         'APPLUS KLEINTEILBEZEICHNUNG': kleinteilbez,
         'Wand ID': wand_id,
     }
-
-
-# def select_file():
-#     filetypes = (
-#         ('csv files', '*.csv'),
-#         ('All files', '*.*')
-#     )
-#     global filepath
-#     filepath = fd.askopenfilename(
-#         title='Open a file',
-#         initialdir=os.getcwd(),
-#         filetypes=filetypes)
 
 
 def plattesml(data, idx):
@@ -106,9 +96,14 @@ def convert():
     if filepath == '':
         print("Es wurde keine Datei zum Konvertieren ausgewählt. Bitte wählen Sie eine vorher aus.")
     data = load_data(filepath)
+    # Data loaded
     for row in data:
+        # cast menge to int
         row['APPLUS MENGE'] = int(row['APPLUS MENGE'])
+        # get the wand id from long string
         row['Wand ID'] = row['APPLUS WAND ID'].split(' ')[1]
+
+        # calculate kleinteil amount
         try:
             if row['APPLUS ARTIKELGRUPPE'] == 'Profil':
                 row['APPLUS KLEINTEILMENGE'] = math.ceil(int(row['APPLUS KLEINTEILSCHLÜSSEL']) *
@@ -126,14 +121,20 @@ def convert():
                 pass
         except:
             row['APPLUS KLEINTEILMENGE'] = 0
+
+        # Add the kleinteil as row into data set
         if row['APPLUS KLEINTEILMENGE'] > 0:
             data.append(
                 get_row('4', row['APPLUS KLEINTEILBEZEICHNUNG'], row['Wand ID'], ap_wand_id=row['APPLUS WAND ID'], gruppe='Kleinteil', artikelnummer=row['APPLUS KLEINTEILARTIKELNUMMER'], menge=row['APPLUS KLEINTEILMENGE']))
 
+    # sort the data by following columns
     data = sorted(data, key=lambda x: (x['Wand ID'], x['APPLUS ARTIKELGRUPPE'],
                                        x['APPLUS ARTIKELNUMMER'], x['APPLUS PROFILLÄNGE'], x['APPLUS FLÄCHE']))
+
+    # combine duplicate rows into one with added amount
     for idx, row in enumerate(data):
-        for i in range(idx + 1, len(data)-1):
+        i = idx + 1
+        while i < len(data):
             if i < len(data) and (row['Wand ID'], row['APPLUS ARTIKELGRUPPE'], row['APPLUS ARTIKELNUMMER'], row['APPLUS PROFILLÄNGE'], row['APPLUS FLÄCHE'], row['APPLUS LÄNGE'], row['APPLUS BREITE']) == \
                     (data[i]['Wand ID'], data[i]['APPLUS ARTIKELGRUPPE'], data[i]['APPLUS ARTIKELNUMMER'], data[i]['APPLUS PROFILLÄNGE'], data[i]['APPLUS FLÄCHE'], data[i]['APPLUS LÄNGE'], data[i]['APPLUS BREITE']):
                 row['APPLUS MENGE'] += data[i]['APPLUS MENGE']
@@ -141,19 +142,35 @@ def convert():
             else:
                 break
 
+    # combine duplicate kleinteil
     for idx, row in enumerate(data):
-        for i in range(idx + 1, len(data)-1):
+        i = idx + 1
+        while i < len(data):
+            if i < len(data) and row['APPLUS ARTIKELNUMMER'] == data[i]['APPLUS ARTIKELNUMMER'] and row['APPLUS ARTIKELGRUPPE'] == "Kleinteil":
+                row['APPLUS MENGE'] += data[i]['APPLUS MENGE']
+                del data[i]
+            else:
+                break
+
+    # combine duplicate rows into one with added amount only Dämmung
+    for idx, row in enumerate(data):
+        i = idx + 1
+        while i < len(data):
             if i < len(data) and (row['Wand ID'], row['APPLUS ARTIKELNUMMER']) == (data[i]['Wand ID'], data[i]['APPLUS ARTIKELNUMMER']) and row['APPLUS ARTIKELGRUPPE'] == 'Dämmung' and data[i]['APPLUS ARTIKELGRUPPE'] == 'Dämmung':
                 row['APPLUS FLÄCHE'] += data[i]['APPLUS FLÄCHE']
                 del data[i]
             else:
                 break
+
+    # create group headers for each wand
     wand_id = 0
     for idx, row in enumerate(data):
         if wand_id != row['Wand ID']:
             wand_id = row['Wand ID']
             data.insert(idx, get_row('2', "Wand " + wand_id, wand_id,
                         gruppe='kalk.pos.', einkauf='0', lager='0', fertigung='1', auftrag='1'))
+
+    # create group headers for each artikelgruppe
     gruppe = ""
     for idx, row in enumerate(data):
         if row['APPLUS ARTIKELGRUPPE'] != gruppe and row['APPLUS EBENE'] == '4':
@@ -161,9 +178,11 @@ def convert():
             data.insert(idx, get_row('3', "Alle " + gruppe + " Wand " +
                         row['Wand ID'], row['Wand ID'], gruppe=gruppe, einkauf='0', lager='0', fertigung='1', auftrag='1'))
 
+    # create project header
     data.insert(0, get_row('1', "Projekt " + title, 0, einkauf='0',
                 lager='0', fertigung='1', auftrag='1'))
 
+    # create zuschnitte
     for idx, row in enumerate(data):
         if row['APPLUS EBENE'] == '4':
             match row['APPLUS ARTIKELGRUPPE']:
@@ -182,7 +201,7 @@ def convert():
                         row['APPLUS ARTIKELNUMMER'] = row['APPLUS BSU ID'] + row['APPLUS LÄNGE'] + \
                             row['APPLUS BREITE'] + \
                             row['APPLUS FLÄCHE'].replace('.', '')
-                        data.insert(idx + 1, get_row('5', '', '',
+                        data.insert(idx + 1, get_row('5', '', '', gruppe='ProfilZ',
                                     artikelnummer=artNr, menge=menge, me='M2'))
                     # print("Platte")
                 case 'Profil':
@@ -207,13 +226,14 @@ def convert():
                     row['AAPLUS LAGER'] = '1'
                     row['AAPLUS FERTIGUNG'] = '0'
                     row['AAPLUS AUFTRAG'] = '0'
-
     fieldnames = ['APPLUS EBENE', 'APPLUS BEZEICHNUNG', 'APPLUS ARTIKELNUMMER', 'APPLUS MENGE', 'APPLUS MENGENEINHEIT', 'APPLUS ARTIKELGRUPPE', 'APPLUS PROFILLÄNGE', 'APPLUS FLÄCHE', 'APPLUS STANDARDPROFILLÄNGE', 'APPLUS STANDARDFLÄCHE',
                   'APPLUS EINKAUF', 'APPLUS LAGER', 'APPLUS FERTIGUNG', 'APPLUS AUFTRAG', 'APPLUS LÄNGE', 'APPLUS BREITE', 'APPLUS WAND ID', 'APPLUS KLEINTEILMENGE', 'APPLUS KLEINTEILBEZEICHNUNG', 'APPLUS KLEINTEILSCHLÜSSEL', 'APPLUS KLEINTEILARTIKELNUMMER', 'APPLUS BSU ID', 'Wand ID']
+
+    # write the data into file
     try:
         with open(filepath.replace('uploads', 'downloads'), 'w', newline='\n', encoding='utf-8-sig') as csvfile:
             writer = csv.DictWriter(
-                csvfile, fieldnames=fieldnames, delimiter=',')
+                csvfile, fieldnames=fieldnames, delimiter=';')
             writer.writeheader()
             writer.writerows(data)
         print("Datei erfolgreich geschrieben")
@@ -224,7 +244,9 @@ def convert():
 filepath = ''
 title = ''
 if __name__ == '__main__':
+    # filepath = 'revit_converter/public/uploads/1649769031958.csv'
     filepath = sys.argv[1]
+    # title = 'Test'
     title = sys.argv[2]
     # print("Python Script start")
     # print(title)

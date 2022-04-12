@@ -1,5 +1,6 @@
 import { NextPageContext } from 'next';
 import fs from 'fs';
+import Link from 'next/link';
 const download = ({ files }) => {
 	return (
 		<div className='w-full h-screen bg-green-500'>
@@ -14,6 +15,11 @@ const download = ({ files }) => {
 					);
 				})}
 			</ul>
+			<div className='flex justify-center mt-16'>
+				<Link href='/upload'>
+					<a className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'>Zum Start</a>
+				</Link>
+			</div>
 		</div>
 	);
 };

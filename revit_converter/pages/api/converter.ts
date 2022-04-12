@@ -2,6 +2,7 @@ import nextConnect from 'next-connect';
 import path from 'path';
 import { spawn } from 'child_process';
 import { NextApiRequest, NextApiResponse } from 'next';
+import fs from 'fs';
 const apiRoute = nextConnect({
 	onError(error: Error, req: NextApiRequest, res: NextApiResponse) {
 		res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
@@ -12,9 +13,10 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.post((req, res) => {
+	const files = fs.readdirSync('public/uploads/');
 	const python_script = spawn('python3', [
 		path.resolve('../main.py'),
-		'./public/uploads/1649760017094.csv',
+		'./public/uploads/' + files[files.length - 1],
 		req.body.proj_titel,
 	]);
 	python_script.stdout.on('data', (data) => {
