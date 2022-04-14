@@ -10,6 +10,8 @@ const Detail: FC = () => {
 		const response = await axios.post('/api/converter', { proj_titel: proj_titel });
 		if (response.status === 200) {
 			router.push('/download');
+		} else {
+			router.push('/');
 		}
 	};
 	return (

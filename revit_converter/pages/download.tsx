@@ -19,6 +19,7 @@ const Download = ({ file }: FileProps) => {
 					<a
 						href={'/api/download?filename=' + filepath}
 						className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'
+						onClick={(e) => setFilePath(null)}
 					>
 						Download
 					</a>
