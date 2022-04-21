@@ -200,7 +200,7 @@ def convert():
                         row['APPLUS ARTIKELNUMMER'] = row['APPLUS BSU ID'] + row['APPLUS LÄNGE'] + \
                             row['APPLUS BREITE'] + \
                             row['APPLUS FLÄCHE'].replace('.', '')
-                        data.insert(idx + 1, get_row('5', '', '', gruppe='ProfilZ',
+                        data.insert(idx + 1, get_row('5', '', '', gruppe='Platte',
                                     artikelnummer=artNr, menge=menge, me='M2'))
                     # print("Platte")
                 case 'Profil':
@@ -214,7 +214,7 @@ def convert():
                         row['APPLUS ARTIKELNUMMER'] = row['APPLUS BSU ID'] + row['APPLUS PROFILLÄNGE'].replace(
                             '.', '') + row['APPLUS STANDARDPROFILLÄNGE'] + row['APPLUS PROFILLÄNGE'].replace('.', '')
                         data.insert(idx + 1, get_row('5', '', '',
-                                    artikelnummer=artNr, menge=menge, me='mm'))
+                                    artikelnummer=artNr, menge=menge, gruppe="ProfilZ", me='mm'))
 
                     continue
                     # print("Profil")
