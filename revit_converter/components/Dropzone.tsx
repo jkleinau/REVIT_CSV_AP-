@@ -16,7 +16,7 @@ function MyDropzone() {
 			if (response.status === 200) {
 				router.push('/convert');
 			} else {
-				router.push('/');
+				router.push('/error');
 			}
 		},
 		[router]

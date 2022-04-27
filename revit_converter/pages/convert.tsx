@@ -11,7 +11,7 @@ const Detail: FC = () => {
 		if (response.status === 200) {
 			router.push('/download');
 		} else {
-			router.push('/');
+			router.push('/error');
 		}
 	};
 	return (

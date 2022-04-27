@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 const apiRoute = nextConnect({
 	onError(error: Error, req: NextApiRequest, res: NextApiResponse) {
+		res.redirect('/error');
 		res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
 	},
 	onNoMatch(req, res) {
