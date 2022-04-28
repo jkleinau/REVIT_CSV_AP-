@@ -11,7 +11,12 @@ const Detail: FC = () => {
 		if (response.status === 200) {
 			router.push('/download');
 		} else {
-			router.push('/error');
+			const msg =
+				'Die Datei konnte nicht umgewandelt werden error code: ' +
+				response.status +
+				' mit der msg: ' +
+				response.statusText;
+			router.push('/error?msg=' + msg);
 		}
 	};
 	return (

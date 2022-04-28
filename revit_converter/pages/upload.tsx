@@ -1,7 +1,3 @@
-import { UiFileInputButton } from '../components/UIFileInputButton';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import MyDropzone from '../components/Dropzone';
 const IndexPage = () => {
 	return (
