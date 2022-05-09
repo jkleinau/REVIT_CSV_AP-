@@ -7,6 +7,7 @@ type FileProps = {
 };
 const Download = ({ file }: FileProps) => {
 	const [filepath, setFilePath] = useState<string | null>(file);
+	const filename = sessionStorage.getItem('filename');
 	return (
 		<div className='w-full h-screen bg-green-500'>
 			<h1 className='text-8xl text-center pt-20'>Erfolgreich Umgewandelt!</h1>
@@ -17,7 +18,7 @@ const Download = ({ file }: FileProps) => {
 				</Link>
 				{filepath ? (
 					<a
-						href={'/api/download?filename=' + filepath}
+						href={'/api/download?filename=' + filename}
 						className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'
 						onClick={(e) => setFilePath(null)}
 					>

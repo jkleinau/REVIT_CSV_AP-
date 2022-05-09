@@ -13,7 +13,7 @@ const apiRoute = nextConnect({
 apiRoute.post((req, res) => {
 	const filename = Date.now() + '.csv';
 	fs.writeFileSync('./public/uploads/' + filename, req.body);
-	res.status(200).json({ data: 'success' });
+	res.status(200).json({ data: 'success', filename: filename });
 });
 
 export default apiRoute;

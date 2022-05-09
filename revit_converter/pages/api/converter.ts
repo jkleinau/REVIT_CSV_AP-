@@ -14,10 +14,11 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.post((req, res) => {
+	const filename = req.body.filename;
 	const files = fs.readdirSync('public/uploads/');
 	const python_script = spawn('python3', [
 		path.resolve('python/main.py'),
-		'./public/uploads/' + files[files.length - 1],
+		'./public/uploads/' + filename,
 		req.body.proj_titel,
 	]);
 	python_script.stdout.on('data', (data) => {
@@ -29,7 +30,7 @@ apiRoute.post((req, res) => {
 	python_script.on('close', (code) => {
 		console.log('pyhton script finished');
 		res.status(200).json({ data: 'success' });
-		fs.unlinkSync('./public/uploads/' + files[files.length - 1]);
+		fs.unlinkSync('./public/uploads/' + filename);
 	});
 });
 

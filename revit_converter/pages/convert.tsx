@@ -6,8 +6,9 @@ import { useRouter } from 'next/router';
 const Detail: FC = () => {
 	const [proj_titel, setproj_titel] = useState('');
 	const router = useRouter();
+	const filename = sessionStorage.getItem('filename');
 	const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		const response = await axios.post('/api/converter', { proj_titel: proj_titel });
+		const response = await axios.post('/api/converter', { proj_titel: proj_titel, filename: filename });
 		if (response.status === 200) {
 			router.push('/download');
 		} else {

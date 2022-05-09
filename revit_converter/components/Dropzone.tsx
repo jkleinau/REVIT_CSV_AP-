@@ -14,6 +14,7 @@ function MyDropzone() {
 			console.log(acceptedFiles[0]);
 			const response = await axios.post('/api/simple', acceptedFiles[0], config);
 			if (response.status === 200) {
+				sessionStorage.setItem('filename', response.data.filename);
 				router.push('/convert');
 			} else {
 				router.push('/error');
