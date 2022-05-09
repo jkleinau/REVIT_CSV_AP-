@@ -21,6 +21,9 @@ const Download = () => {
 				<a
 					href={'/api/download?filename=' + filename}
 					className='px-4 py-2 rounded border-2 mx-4 hover:bg-white hover:text-green-500'
+					onClick={() => {
+						document.body.getElementsByTagName('a')[1].setAttribute('style', 'display: none;');
+					}}
 				>
 					Download
 				</a>
