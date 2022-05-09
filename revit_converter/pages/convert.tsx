@@ -7,6 +7,10 @@ const Detail: FC = () => {
 	const [proj_titel, setproj_titel] = useState('');
 	const router = useRouter();
 	const filename = sessionStorage.getItem('filename');
+	if (filename == null || filename == undefined || filename == '') {
+		const msg = 'filename could not be found in session Storage';
+		router.push('/error?msg=' + msg);
+	}
 	const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const response = await axios.post('/api/converter', { proj_titel: proj_titel, filename: filename });
 		if (response.status === 200) {
