@@ -81,7 +81,7 @@ def load_data(filepath):
     data = []
     try:
         with open(filepath, newline='\n', encoding='utf-8-sig') as csvfile:
-            spamreader = csv.DictReader(csvfile, delimiter=';', quotechar='|')
+            spamreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
             for row in spamreader:
                 data.append(row)
         print('Datei erfolgreich geladen')
@@ -166,7 +166,7 @@ def convert():
     for idx, row in enumerate(data):
         if wand_id != row['Wand ID']:
             wand_id = row['Wand ID']
-            data.insert(idx, get_row('2', "Wand " + wand_id, wand_id,
+            data.insert(idx, get_row('2', "Element " + wand_id, wand_id,
                         gruppe='kalk.pos.', einkauf='0', lager='0', fertigung='1', auftrag='1'))
 
     # create group headers for each artikelgruppe
@@ -174,7 +174,7 @@ def convert():
     for idx, row in enumerate(data):
         if row['APPLUS ARTIKELGRUPPE'] != gruppe and row['APPLUS EBENE'] == '4':
             gruppe = row['APPLUS ARTIKELGRUPPE']
-            data.insert(idx, get_row('3', "Alle " + gruppe + " Wand " +
+            data.insert(idx, get_row('3', "Alle " + gruppe + " Element " +
                         row['Wand ID'], row['Wand ID'], gruppe=gruppe, einkauf='0', lager='0', fertigung='1', auftrag='1'))
 
     # create project header
@@ -243,10 +243,10 @@ def convert():
 filepath = ''
 title = ''
 if __name__ == '__main__':
-    # filepath = 'revit_converter/public/uploads/1649769031958.csv'
-    filepath = sys.argv[1]
-    # title = 'Test'
-    title = sys.argv[2]
+    filepath = 'revit_converter/Produktionsplanung.csv'
+    # filepath = sys.argv[1]
+    title = 'Test'
+    # title = sys.argv[2]
     # print("Python Script start")
     # print(title)
     convert()
