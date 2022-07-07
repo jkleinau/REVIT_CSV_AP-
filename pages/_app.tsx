@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import Nav from '../components/Nav';
 
+// Base Component that renders all everything else
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>

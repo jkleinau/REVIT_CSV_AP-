@@ -5,7 +5,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 On first start run:
 
 ```bash
-npm run install #install all dependecies
+#install all dependecies
+npm run install
 ```
 
 Run the development server:
@@ -49,7 +50,7 @@ ssh bsu@192.168.2.200
 4. Update Docker Image
 
 ```bash
-sudo docker-compose  down
+sudo docker-compose down
 sudo docker-compose up
 ```
 

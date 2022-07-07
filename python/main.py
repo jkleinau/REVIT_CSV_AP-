@@ -88,7 +88,7 @@ def load_data(filepath):
         # print(data)
         return data
     except:
-        print("Datei laden fehlgeschlagen")
+        raise Exception("Datei konnte nicht geladen werden")
 
 
 def convert():
@@ -237,6 +237,7 @@ def convert():
             writer.writerows(data)
         print("Datei erfolgreich geschrieben")
     except:
+        raise Exception("Datei schreiben fehlgeschlagen")
         print("Datei schreiben fehlgeschlagen")
 
 

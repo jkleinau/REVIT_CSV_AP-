@@ -1,4 +1,6 @@
 import Link from 'next/link';
+
+// Start page without any logic just a link to the upload page
 const IndexPage = () => {
 	return (
 		<div>
@@ -13,10 +15,5 @@ const IndexPage = () => {
 		</div>
 	);
 };
-// export async function getServerSideProps(context: NextPageContext) {
-// 	const files = fs.readdirSync('public/uploads');
-// 	return {
-// 		props: { files }, // will be passed to the page component as props
-// 	};
-// }
+
 export default IndexPage;

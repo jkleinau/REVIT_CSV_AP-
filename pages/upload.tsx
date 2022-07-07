@@ -1,4 +1,7 @@
 import MyDropzone from '../components/Dropzone';
+
+// Upload page that utilizes Dropzone for file upload with drag-n-drop functionality
+// for more information about dropzone see doc:https://docs.dropzone.dev
 const IndexPage = () => {
 	return (
 		<div>
