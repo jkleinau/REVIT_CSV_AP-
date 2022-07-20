@@ -213,8 +213,9 @@ def convert():
 
                         row['APPLUS ARTIKELNUMMER'] = row['APPLUS BSU ID'] + row['APPLUS PROFILLÄNGE'].replace(
                             '.', '') + row['APPLUS STANDARDPROFILLÄNGE'] + row['APPLUS PROFILLÄNGE'].replace('.', '')
+                        row['APPLUS ARTIKELGRUPPE'] = 'ProfilZ'
                         data.insert(idx + 1, get_row('5', '', '',
-                                    artikelnummer=artNr, menge=menge, gruppe="ProfilZ", me='mm'))
+                                    artikelnummer=artNr, menge=menge, gruppe="Profil", me='mm'))
 
                     continue
                     # print("Profil")
