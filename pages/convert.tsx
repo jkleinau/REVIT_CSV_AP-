@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
