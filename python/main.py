@@ -81,7 +81,7 @@ def load_data(filepath):
     data = []
     try:
         with open(filepath, newline='\n', encoding='utf-8-sig') as csvfile:
-            spamreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+            spamreader = csv.DictReader(csvfile, delimiter=';', quotechar='"')
             for row in spamreader:
                 data.append(row)
         print('Datei erfolgreich geladen')
@@ -175,7 +175,7 @@ def convert():
         if row['APPLUS ARTIKELGRUPPE'] != gruppe and row['APPLUS EBENE'] == '4':
             gruppe = row['APPLUS ARTIKELGRUPPE']
             data.insert(idx, get_row('3', "Alle " + gruppe + " Element " +
-                        row['Wand ID'], row['Wand ID'], gruppe=gruppe, einkauf='0', lager='0', fertigung='1', auftrag='1'))
+                        row['Wand ID'], row['Wand ID'], gruppe=('Metallbearbeitung' if gruppe == 'Profil' else gruppe), einkauf='0', lager='0', fertigung='1', auftrag='1'))
 
     # create project header
     data.insert(0, get_row('1', "Projekt " + title, 0, einkauf='0',
@@ -244,10 +244,10 @@ def convert():
 filepath = ''
 title = ''
 if __name__ == '__main__':
-    # filepath = 'revit_converter/Produktionsplanung.csv'
-    filepath = sys.argv[1]
-    # title = 'Test'
-    title = sys.argv[2]
+    filepath = 'public/uploads/Produktionsplanung.csv'
+    # filepath = sys.argv[1]
+    title = 'Test'
+    # title = sys.argv[2]
     # print("Python Script start")
     # print(title)
     convert()
