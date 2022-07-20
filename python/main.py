@@ -245,10 +245,10 @@ def convert():
 filepath = ''
 title = ''
 if __name__ == '__main__':
-    filepath = 'public/uploads/Produktionsplanung.csv'
-    # filepath = sys.argv[1]
-    title = 'Test'
-    # title = sys.argv[2]
+    # filepath = 'public/uploads/Produktionsplanung.csv'
+    filepath = sys.argv[1]
+    # title = 'Test'
+    title = sys.argv[2]
     # print("Python Script start")
     # print(title)
     convert()
